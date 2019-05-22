@@ -118,7 +118,7 @@ $redactor = (new ArrayRedactor($login, ['password', 'session_id']))->redactToJso
 
 // $redactor will return:
 "{
-	"email": "mtownsend5512@gmail.com",
+	"email": "john_doe@domain.com",
 	"password": "[REDACTED]",
 	"data": {
 		"session_id": "[REDACTED]"
