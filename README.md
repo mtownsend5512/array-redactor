@@ -146,7 +146,7 @@ $redactor = (new ArrayRedactor($login, ['password', 'session_id']))->ink(null)->
     'email' => 'john_doe@domain.com',
     'password' => null,
     'data' => [
-        'session_id' => 'z481jf0an4kasnc8a84aj831'
+        'session_id' => null
     ],
 ];
 ```
@@ -169,7 +169,7 @@ $redactor = (new ArrayRedactor($login, ['password', 'session_id'], null))();
     'email' => 'john_doe@domain.com',
     'password' => null,
     'data' => [
-        'session_id' => 'z481jf0an4kasnc8a84aj831'
+        'session_id' => null
     ],
 ];
 ```
