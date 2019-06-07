@@ -77,7 +77,7 @@ class ArrayRedactor
      */
     public function ink($ink = '[REDACTED]')
     {
-        $this->ink = $ink;
+        $this->ink = is_callable($ink) ? $ink() : $ink;
         return $this;
     }
 
