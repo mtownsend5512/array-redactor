@@ -94,4 +94,16 @@ class ArrayRedactorTest extends TestCase
         	'password' => null
         ]), $result);
     }
+
+    /** @test */
+    public function can_accept_closure_in_ink()
+    {
+        $array = $this->content;
+        $result = (new ArrayRedactor())->content($this->content)->keys(['email'])->ink(function() use ($array) {
+            return substr($array['email'], stripos($array['email'], '@'));
+        })->redact();
+        $this->assertEquals(array_merge($this->content, [
+            'email' => '@gmail.com'
+        ]), $result);
+    }
 }
