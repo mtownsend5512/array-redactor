@@ -162,20 +162,20 @@ $login = [
     ],
 ];
 
-$ink_function = function (string $val): string {
-    return mb_substr($val, 0, 1) . str_repeat('*', mb_strlen($val) - 2) . mb_substr($val, mb_strlen($val) - 1, 1);
+$ink_function = function($val, $key) {
+    return $key === 'email' ? substr($val, stripos($val, '@')) : '[REDACTED]';
 };
 
-$redactor = (new ArrayRedactor($login, ['password', 'session_id'], $ink_function))->redact();
+$redactor = (new ArrayRedactor($login, ['email', 'password', 'session_id'], $ink_function))->redact();
 // or...
-$redactor = (new ArrayRedactor($login, ['password', 'session_id']))->ink($ink_function)->redact();
+$redactor = (new ArrayRedactor($login, ['email', 'password', 'session_id']))->ink($ink_function)->redact();
 
 // $redactor will return:
 [
-    'email' => 'john_doe@domain.com',
-    'password' => 's*******3'
+    'email' => '@domain.com',
+    'password' => '[REDACTED]'
     'data' => [
-        'session_id' => 'z**********************1'
+        'session_id' => '[REDACTED]'
     ],
 ];
 
