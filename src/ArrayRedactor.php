@@ -99,7 +99,7 @@ class ArrayRedactor
         // Recursively traverse the array and redact the specified keys
         array_walk_recursive($this->content, function (&$value, $key) {
             if (in_array($key, $this->keys, true)) {
-                $value = $this->ink;
+                $value = is_callable($ink) ? $ink($value) : $this->ink;
             }
         });
 
