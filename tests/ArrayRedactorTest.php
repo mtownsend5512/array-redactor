@@ -6,7 +6,7 @@ use Mtownsend\ArrayRedactor\ArrayRedactor;
 
 class ArrayRedactorTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
     	$this->content = [
     		'email' => 'mtownsend5512@gmail.com',
@@ -98,10 +98,11 @@ class ArrayRedactorTest extends TestCase
     /** @test */
     public function can_accept_closure_in_ink()
     {
-        $array = $this->content;
-        $result = (new ArrayRedactor())->content($this->content)->keys(['email'])->ink(function() use ($array) {
-            return substr($array['email'], stripos($array['email'], '@'));
-        })->redact();
+        $func = function(string $val, string $key): string {
+            return $key === 'email' ? substr($val, stripos($val, '@')) : $val;
+        };
+
+        $result = (new ArrayRedactor())->content($this->content)->keys(['email'])->ink($func)->redact();
         $this->assertEquals(array_merge($this->content, [
             'email' => '@gmail.com'
         ]), $result);

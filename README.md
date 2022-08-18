@@ -151,6 +151,36 @@ $redactor = (new ArrayRedactor($login, ['password', 'session_id']))->ink(null)->
 ];
 ```
 
+If the value you pass into the third constructor argument or the `->ink()` method is callable, it will be invoked when redacting each value, and its return value will be used as the redacted value in the result:
+
+```php
+$login = [
+    'email' => 'john_doe@domain.com',
+    'password' => 'secret123',
+    'data' => [
+        'session_id' => 'z481jf0an4kasnc8a84aj831'
+    ],
+];
+
+$ink_function = function($val, $key) {
+    return $key === 'email' ? substr($val, stripos($val, '@')) : '[REDACTED]';
+};
+
+$redactor = (new ArrayRedactor($login, ['email', 'password', 'session_id'], $ink_function))->redact();
+// or...
+$redactor = (new ArrayRedactor($login, ['email', 'password', 'session_id']))->ink($ink_function)->redact();
+
+// $redactor will return:
+[
+    'email' => '@domain.com',
+    'password' => '[REDACTED]'
+    'data' => [
+        'session_id' => '[REDACTED]'
+    ],
+];
+
+```
+
 You can call the ``ArrayRedactor`` as a function and the magic ``__invoke()`` method will call the ``redact`` method for you.
 
 ```php
