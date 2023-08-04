@@ -48,7 +48,7 @@ class ArrayRedactor
     /**
      * Provide the content to undergo redaction
      *
-     * @param  mixed array|string $content The content to redact (either array of json)
+     * @param mixed array|string $content The content to redact (either array of json)
      * @return object \Mtownsend\ArrayRedactor\ArrayRedactor
      */
     public function content($content = [])
@@ -60,7 +60,7 @@ class ArrayRedactor
     /**
      * Set the keys to redact
      *
-     * @param  array $keys A non-associative array of keys that should be redacted in the content
+     * @param array $keys A non-associative array of keys that should be redacted in the content
      * @return object \Mtownsend\ArrayRedactor\ArrayRedactor
      */
     public function keys($keys = [])
@@ -72,7 +72,7 @@ class ArrayRedactor
     /**
      * Set the value to replace redacted key values with
      *
-     * @param  mixed $ink What should replace the redacted data
+     * @param mixed $ink What should replace the redacted data
      * @return object \Mtownsend\ArrayRedactor\ArrayRedactor
      */
     public function ink($ink = '[REDACTED]')
@@ -93,7 +93,10 @@ class ArrayRedactor
         }
 
         if (!is_array($this->content) || !$this->isAssocArray($this->content)) {
-            throw new ArrayRedactorException("ArrayRedactor received invalid content `{$this->content}`");
+            throw new ArrayRedactorException(sprintf(
+                "ArrayRedactor received invalid content%s",
+                is_scalar($this->content) ? `{$this->content}` : ''
+            ));
         }
 
         // Recursively traverse the array and redact the specified keys
@@ -129,7 +132,7 @@ class ArrayRedactor
     /**
      * Determine if the given array is associative or non-associative
      *
-     * @param  array  $array
+     * @param array $array
      * @return boolean
      */
     protected function isAssocArray(array $array)
@@ -141,7 +144,7 @@ class ArrayRedactor
     /**
      * Check if the string received is valid json
      *
-     * @param  string $string Assumed json string
+     * @param string $string Assumed json string
      * @return boolean
      */
     protected function isValidJson($string)
